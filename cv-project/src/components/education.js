@@ -1,13 +1,18 @@
 import { Component } from 'react';
+import uniqid from "uniqid";
+
 
 class Education extends Component {
     constructor(){
         super();
 
         this.state = {
-            university: '',
-            degree: '',
-            subject: '',
+            education: {university: '', 
+                        degree: '', 
+                        subject: '',
+                        id: uniqid(),
+                    },
+            eduList: [],
 
         };
 
@@ -15,27 +20,76 @@ class Education extends Component {
 
     };
 
-    onClickAddBtn(){
-        console.log('clicked');
-    }
+    handleChangeUni = (e) => {
+        this.setState({
+            education: {university: e.target.value,
+                        degree: '',
+                        subject: '',
+                        id: '' ,
+            },
+        });
+    };
+
+    handleChangeDegree = (e) => {
+        this.setState({
+            education: {university: this.state.education.university,
+                        degree: e.target.value,
+                        subject: '',
+                        id: '' ,
+            },
+        });
+    };
+
+    handleChangeSubject = (e) => {
+        this.setState({
+            education: {university: this.state.education.university,
+                        degree: this.state.education.degree,
+                        subject: e.target.value,
+                        id: this.state.education.id,
+            },
+        });
+    };
+
+    onClickAddBtn = (e) => {
+        e.preventDefault();
+        this.setState({
+            eduList: this.state.eduList.concat(this.state.education),
+            education: {university: '', degree: '', subject: '', id: uniqid()},
+        });
+    };
+
+
 
 
     render(){
+        const {education, eduList} = this.state;
         
         return(
             <>
             <label>
-                <input placeholder='University/College'/>
+                <input onChange={this.handleChangeUni} value={education.university ||''} placeholder='University/College'/>
             </label>
             <label>
-                <input placeholder='Degree'/>
+                <input onChange={this.handleChangeDegree} value={education.degree ||''} placeholder='Degree'/>
             </label>
             <label>
-                <input placeholder='Subject'/>
+                <input onChange={this.handleChangeSubject} value={education.subject ||''} placeholder='Subject'/>
             </label>
-            <button onClick={this.onClickAddBtn}>Add</button>
-            <button>Delete</button>
+            <button onClick={this.onClickAddBtn} type='submit'>Add</button>
             <h2>Education</h2>
+            <ul>
+                {eduList.map((education) => {
+                    return (<>
+                    <ul>
+                        <li key={education.id}>
+                          <div>{education.university}</div>
+                          <div>{education.degree} {education.subject}</div>
+                        </li>
+                    </ul>
+                    </>
+                    )
+                })}
+            </ul> 
             </>
         );
     }
