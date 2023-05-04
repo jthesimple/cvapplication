@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-///import Education from "./components/education.js";
+import Education from "./components/education.js";
 import PersonalInfo from './components/personal.js';
+import uniqid from "uniqid";
 
 class App extends Component {
   constructor(){
@@ -18,10 +19,13 @@ class App extends Component {
         university: '',
         degree:'',
         subject:'',
+        id: uniqid(),
       },
       eduList: [],
       
     };   
+
+    this.onClickAddBtn = this.onClickAddBtn.bind(this);
 
   };
 
@@ -84,9 +88,57 @@ class App extends Component {
     });
   };
 
+  handleChangeUni = (e) => {
+    this.setState({
+        education: {
+          university: e.target.value,
+          degree: '',
+          subject: '',
+          id: this.state.education.id ,
+        },
+    });
+  };
+
+  handleChangeDegree = (e) => {
+    this.setState({
+      education: {
+        university: this.state.education.university,
+        degree: e.target.value,
+        subject: '',
+        id: this.state.education.id,
+      },
+    });
+  }; 
+
+  handleChangeSubject = (e) => {
+    this.setState({
+      education: {
+        university: this.state.education.university,
+        degree: this.state.education.degree,
+        subject: e.target.value,
+        id: this.state.education.id,
+      }
+    });
+  };
+
+  onClickAddBtn = (e) => {
+    e.preventDefault();
+    this.setState({
+        eduList: this.state.eduList.concat(this.state.education),
+        education: {
+          university: '', 
+          degree: '', 
+          subject: '', 
+          id: uniqid()
+        },
+      });
+  };
+
+
+
 
   render() {
-    const {personal, education} = this.state;
+    const {personal, education, eduList} = this.state;
     return (
     <>
       <div>Start creating you CV below:</div>
@@ -116,11 +168,11 @@ class App extends Component {
      <label>
         <input onChange={this.handleChangeSubject} value={education.subject} placeholder='Subject'/>
       </label>
-
-
-
+      <button onClick={this.onClickAddBtn} type='submit'>Add</button>
 
      <PersonalInfo personal={personal}></PersonalInfo>
+     <Education list={eduList}></Education>
+     
     </>
     );
   }
