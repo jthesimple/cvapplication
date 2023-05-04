@@ -171,7 +171,7 @@ class App extends Component {
       <button onClick={this.onClickAddBtn} type='submit'>Add</button>
 
      <PersonalInfo personal={personal}></PersonalInfo>
-     <Education list={eduList}></Education>
+     
      
     </>
     );
