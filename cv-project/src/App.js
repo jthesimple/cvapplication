@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Education from "./components/education.js";
 import PersonalInfo from './components/personal.js';
+import Work from "./components/work.js";
 import uniqid from "uniqid";
 
 class App extends Component {
@@ -21,11 +22,21 @@ class App extends Component {
         subject:'',
         id: uniqid(),
       },
+      experience: {
+        company:'',
+        position: '',
+        tenure: '',
+        details:'',
+        id: uniqid(),
+      },
       eduList: [],
+      workExperience: [],
       
     };   
 
     this.onClickAddBtn = this.onClickAddBtn.bind(this);
+
+    this.onClickAddWork = this.onClickAddWork.bind(this);
 
     this.removeEducation = this.removeEducation.bind(this);
 
@@ -124,6 +135,60 @@ class App extends Component {
     });
   };
 
+  handleChangeCompany = (e) => {
+    this.setState({
+      experience:{
+        company: e.target.value,
+        position: '',
+        tenure: '',
+        details:'',
+        id: this.state.experience.id,
+
+      }
+    })
+  };
+
+  handleChangePosition = (e) => {
+    this.setState({
+      experience:{
+        company: this.state.experience.company,
+        position: e.target.value,
+        tenure: '',
+        details:'',
+        id: this.state.experience.id,
+
+      }
+    })
+  };
+
+  handleChangeTenure = (e) => {
+    this.setState({
+      experience:{
+        company: this.state.experience.company,
+        position: this.state.experience.position,
+        tenure: e.target.value,
+        details:'',
+        id: this.state.experience.id,
+
+      }
+    })
+  };
+
+  handleChangeDetails = (e) => {
+    this.setState({
+      experience:{
+        company: this.state.experience.company,
+        position: this.state.experience.position,
+        tenure: this.state.experience.tenure,
+        details: e.target.value,
+        id: this.state.experience.id,
+
+      }
+    })
+  };
+
+
+
   onClickAddBtn = (e) => {
     e.preventDefault();
     this.setState({
@@ -137,6 +202,22 @@ class App extends Component {
       });
   };
 
+  onClickAddWork = (e) => {
+    e.preventDefault();
+    this.setState({
+      workExperience: this.state.workExperience.concat(this.state.experience),
+      experience: {
+        company: '',
+        position: '',
+        tenure: '',
+        details: '',
+        id:uniqid()
+      },
+
+    });
+
+  }
+
   removeEducation = (id) => {
     const updatedEduList = this.state.eduList.filter((edu)=> edu.id !==id);
     this.setState({eduList: updatedEduList});
@@ -144,11 +225,16 @@ class App extends Component {
 
   };
 
+  removeWork = (id) => {
+    const updatedWorkList = this.state.workExperience.filter((work)=>work.id !==id);
+    this.setState({workExperience: updatedWorkList});
+  }
+
 
 
 
   render() {
-    const {personal, education, eduList} = this.state;
+    const {personal, education, eduList, experience, workExperience} = this.state;
     return (
     <>
       <div>Start creating you CV below:</div>
@@ -181,10 +267,29 @@ class App extends Component {
         </label>
         <button type='submit'>Add</button>
       </form>
+      <hr></hr>
+      <form onSubmit={this.onClickAddWork}>
+        <label>
+          <input onChange={this.handleChangeCompany} value={experience.company} placeholder='Company Name'/>
+        </label>
+        <label>
+          <input onChange={this.handleChangePosition} value={experience.position} placeholder='Position'/>
+        </label>
+        <label>
+          <input onChange={this.handleChangeTenure} value={experience.tenure} placeholder='Tenure'/>
+        </label>
+        <label>
+          <input onChange={this.handleChangeDetails} value={experience.details} placeholder='Details'/>
+        </label>
+        <button type='submit'>Add</button>
+      </form>
+      <hr></hr>
 
      <PersonalInfo personal={personal}></PersonalInfo>
      <h2>Education</h2>
      <Education list={eduList} remove={this.removeEducation}></Education>
+     <h2>Work Experience</h2>
+     <Work workList={workExperience} remove={this.removeWork}></Work>
      
      
     </>

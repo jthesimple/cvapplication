@@ -8,8 +8,8 @@ const Education = (props) => {
       {list.map((item) => {
         return  (
             <React.Fragment key={item.id}>
-            <li>{item.university}</li>
-            <div>{item.degree} {item.subject}</div>
+            <div>{item.university}</div>
+            <li>{item.degree} {item.subject}</li>
             <button onClick={() => remove(item.id)}>Remove</button>
             </React.Fragment>
         )
