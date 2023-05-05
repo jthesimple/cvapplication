@@ -27,6 +27,9 @@ class App extends Component {
 
     this.onClickAddBtn = this.onClickAddBtn.bind(this);
 
+    this.removeEducation = this.removeEducation.bind(this);
+
+
   };
 
   handleChangeFirst = (e) => {
@@ -134,6 +137,13 @@ class App extends Component {
       });
   };
 
+  removeEducation = (id) => {
+    const updatedEduList = this.state.eduList.filter((edu)=> edu.id !==id);
+    this.setState({eduList: updatedEduList});
+    
+
+  };
+
 
 
 
@@ -159,20 +169,22 @@ class App extends Component {
      </label>
      <hr></hr>
      <div>Add your education below:</div>
-     <label>
-      <input onChange={this.handleChangeUni} value={education.university}placeholder='University/College'/>
-     </label>
-     <label>
-      <input onChange={this.handleChangeDegree} value={education.degree} placeholder='Degree'/>
-     </label>
-     <label>
-        <input onChange={this.handleChangeSubject} value={education.subject} placeholder='Subject'/>
+     <form onSubmit={this.onClickAddBtn}>
+      <label>
+        <input onChange={this.handleChangeUni} value={education.university}placeholder='University/College'/>
       </label>
-      <button onClick={this.onClickAddBtn} type='submit'>Add</button>
+      <label>
+        <input onChange={this.handleChangeDegree} value={education.degree} placeholder='Degree'/>
+      </label>
+      <label>
+          <input onChange={this.handleChangeSubject} value={education.subject} placeholder='Subject'/>
+        </label>
+        <button type='submit'>Add</button>
+      </form>
 
      <PersonalInfo personal={personal}></PersonalInfo>
      <h2>Education</h2>
-     <Education list={eduList}></Education>
+     <Education list={eduList} remove={this.removeEducation}></Education>
      
      
     </>

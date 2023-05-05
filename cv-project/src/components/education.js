@@ -1,23 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Education = (props) => {
-  const { list } = props;
-
-  const [eduArray, setEduArray] = useState(list);
-
-  const removeEdu = (id) =>{
-    const newList = eduArray.filter((edu) => edu.id !==id)
-    setEduArray(newList);
-  };
+  const {list, remove}  = props;
 
   return (
     <ul>
-      {eduArray.map((item) => {
+      {list.map((item) => {
         return  (
             <React.Fragment key={item.id}>
             <li>{item.university}</li>
             <div>{item.degree} {item.subject}</div>
-            <button onClick={()=>removeEdu(item.id)}>Remove</button>
+            <button onClick={() => remove(item.id)}>Remove</button>
             </React.Fragment>
         )
       })}
